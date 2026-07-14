@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Github, FileText, MessageSquare, Presentation, Mic, Network, GraduationCap, Sparkles, Youtube, Globe, Table, Search, Zap, Database, Layers, Info } from "lucide-react";
+import { ArrowRight, Github, FileText, MessageSquare, Presentation, Mic, Network, GraduationCap, Sparkles, Youtube, Globe, Table, Search, Zap, Database, Layers, Info,TextSearch } from "lucide-react";
 import { LightboxHost, ZoomableImage } from "@/components/Lightbox";
 
 import chatImg from "@/assets/screenshots/chat_preview.png";
@@ -32,7 +32,7 @@ function LogoMark() {
   return (
     <div className="flex items-center gap-2">
       <div className="grid place-items-center h-9 w-9 rounded-xl bg-brand-soft border border-[oklch(0.85_0.1_305/0.5)]">
-        <Search className="h-4 w-4" style={{ color: "oklch(0.5 0.28 305)" }} strokeWidth={2.5} />
+        <TextSearch className="h-4 w-4" style={{ color: "oklch(0.5 0.28 305)" }} strokeWidth={2.5} />
       </div>
       <span className="text-lg font-semibold tracking-tight">DocContextly</span>
     </div>
