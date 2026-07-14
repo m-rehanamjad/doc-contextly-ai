@@ -99,21 +99,38 @@ export function Lightbox({ src, alt, onClose }: Props) {
   );
 }
 
-type ZoomableProps = { src: string; alt: string; className?: string; onOpen: (src: string, alt: string) => void };
+type ZoomableProps = { src: string; alt: string; className?: string };
 
-export function ZoomableImage({ src, alt, className, onOpen }: ZoomableProps) {
+export function ZoomableImage({ src, alt, className }: ZoomableProps) {
+  const open = () => {
+    window.dispatchEvent(new CustomEvent("lightbox:open", { detail: { src, alt } }));
+  };
   return (
     <button
       type="button"
-      onClick={() => onOpen(src, alt)}
+      onClick={open}
       className="group relative block w-full h-full overflow-hidden cursor-zoom-in"
       aria-label={`Open ${alt} in full view`}
     >
       <img src={src} alt={alt} className={className} />
-      <span className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-      <span className="absolute top-3 right-3 h-9 w-9 grid place-items-center rounded-full bg-white/90 text-ink shadow-lg opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all">
+      <span className="absolute inset-0 bg-black/0 group-hover:bg-black/15 transition-colors" />
+      <span className="absolute top-3 right-3 h-9 w-9 grid place-items-center rounded-full bg-white/95 text-ink shadow-lg opacity-0 group-hover:opacity-100 translate-y-1 group-hover:translate-y-0 transition-all">
         <ZoomIn className="h-4 w-4" />
       </span>
     </button>
   );
+}
+
+export function LightboxHost() {
+  const [item, setItem] = useState<{ src: string; alt: string } | null>(null);
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail as { src: string; alt: string };
+      setItem(detail);
+    };
+    window.addEventListener("lightbox:open", handler);
+    return () => window.removeEventListener("lightbox:open", handler);
+  }, []);
+  if (!item) return null;
+  return <Lightbox src={item.src} alt={item.alt} onClose={() => setItem(null)} />;
 }
