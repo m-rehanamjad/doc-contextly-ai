@@ -178,7 +178,7 @@ function ArtifactsSection() {
                 <p className="mt-2 text-muted-foreground">{a.desc}</p>
               </div>
               <div className="relative overflow-hidden bg-secondary/50 border-t md:border-t-0 md:border-l border-border">
-                <img src={a.img} alt={`${a.title} preview`} className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-500" />
+                <ZoomableImage src={a.img} alt={`${a.title} preview`} className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-500" />
               </div>
             </div>
           </article>
