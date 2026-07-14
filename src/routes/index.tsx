@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Github, FileText, MessageSquare, Presentation, Mic, Network, GraduationCap, Sparkles, Youtube, Globe, Table, Search, Zap, Database, Layers } from "lucide-react";
+import { ArrowRight, Github, FileText, MessageSquare, Presentation, Mic, Network, GraduationCap, Sparkles, Youtube, Globe, Table, Search, Zap, Database, Layers, Info } from "lucide-react";
+import { LightboxHost, ZoomableImage } from "@/components/Lightbox";
 
 import chatImg from "@/assets/screenshots/chat_preview.png";
 import deckImg from "@/assets/screenshots/side_deck_preview.png";
@@ -88,7 +89,7 @@ function Hero() {
       <div className="mt-16 relative">
         <div className="absolute -inset-4 rounded-3xl blur-2xl opacity-60" style={{ background: "linear-gradient(120deg, oklch(0.85 0.15 305 / 0.5), oklch(0.85 0.12 330 / 0.4))" }} />
         <div className="relative rounded-2xl overflow-hidden border border-border shadow-[0_40px_100px_-30px_oklch(0.3_0.15_290/0.4)] bg-white">
-          <img src={chatImg} alt="DocContextly chat interface showing RAG-grounded answers over uploaded sources" className="w-full block" />
+          <ZoomableImage src={chatImg} alt="DocContextly chat interface showing RAG-grounded answers over uploaded sources" className="w-full block" />
         </div>
       </div>
     </section>
@@ -132,7 +133,7 @@ function SourcesSection() {
           { img: ytImg, label: "YouTube embed with transcript extraction" },
         ].map((c) => (
           <figure key={c.label} className="group rounded-2xl overflow-hidden border border-border bg-white shadow-sm hover:shadow-xl transition-shadow">
-            <img src={c.img} alt={c.label} className="w-full aspect-[4/3] object-cover object-top" />
+            <ZoomableImage src={c.img} alt={c.label} className="w-full aspect-[4/3] object-cover object-top" />
             <figcaption className="px-4 py-3 text-xs text-muted-foreground">{c.label}</figcaption>
           </figure>
         ))}
@@ -177,7 +178,7 @@ function ArtifactsSection() {
                 <p className="mt-2 text-muted-foreground">{a.desc}</p>
               </div>
               <div className="relative overflow-hidden bg-secondary/50 border-t md:border-t-0 md:border-l border-border">
-                <img src={a.img} alt={`${a.title} preview`} className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-500" />
+                <ZoomableImage src={a.img} alt={`${a.title} preview`} className="w-full h-full object-cover object-top group-hover:scale-[1.02] transition-transform duration-500" />
               </div>
             </div>
           </article>
@@ -327,9 +328,26 @@ function Footer() {
   );
 }
 
+function StatusBanner() {
+  return (
+    <div className="w-full text-white text-sm" style={{ background: "linear-gradient(90deg, oklch(0.35 0.2 305), oklch(0.4 0.22 285))" }}>
+      <div className="mx-auto max-w-6xl px-4 py-2.5 flex flex-col sm:flex-row items-center justify-center gap-x-4 gap-y-1 text-center">
+        <span className="inline-flex items-center gap-2">
+          <Info className="h-4 w-4 opacity-90" />
+          <span><strong className="font-semibold">Heads up:</strong> the live app is still being deployed — this page walks through the full product with screenshots, features & architecture.</span>
+        </span>
+        <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 font-semibold underline underline-offset-2 hover:opacity-90 whitespace-nowrap">
+          <Github className="h-3.5 w-3.5" /> View code on GitHub <ArrowRight className="h-3.5 w-3.5" />
+        </a>
+      </div>
+    </div>
+  );
+}
+
 function Landing() {
   return (
     <div className="min-h-screen">
+      <StatusBanner />
       <div className="pt-4">
         <Nav />
       </div>
@@ -342,6 +360,7 @@ function Landing() {
         <CTA />
       </main>
       <Footer />
+      <LightboxHost />
     </div>
   );
 }
