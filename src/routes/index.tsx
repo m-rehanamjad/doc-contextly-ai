@@ -89,7 +89,7 @@ function Hero() {
       <div className="mt-16 relative">
         <div className="absolute -inset-4 rounded-3xl blur-2xl opacity-60" style={{ background: "linear-gradient(120deg, oklch(0.85 0.15 305 / 0.5), oklch(0.85 0.12 330 / 0.4))" }} />
         <div className="relative rounded-2xl overflow-hidden border border-border shadow-[0_40px_100px_-30px_oklch(0.3_0.15_290/0.4)] bg-white">
-          <img src={chatImg} alt="DocContextly chat interface showing RAG-grounded answers over uploaded sources" className="w-full block" />
+          <ZoomableImage src={chatImg} alt="DocContextly chat interface showing RAG-grounded answers over uploaded sources" className="w-full block" />
         </div>
       </div>
     </section>
