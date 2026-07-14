@@ -328,9 +328,26 @@ function Footer() {
   );
 }
 
+function StatusBanner() {
+  return (
+    <div className="w-full text-white text-sm" style={{ background: "linear-gradient(90deg, oklch(0.35 0.2 305), oklch(0.4 0.22 285))" }}>
+      <div className="mx-auto max-w-6xl px-4 py-2.5 flex flex-col sm:flex-row items-center justify-center gap-x-4 gap-y-1 text-center">
+        <span className="inline-flex items-center gap-2">
+          <Info className="h-4 w-4 opacity-90" />
+          <span><strong className="font-semibold">Heads up:</strong> the live app is still being deployed — this page walks through the full product with screenshots, features & architecture.</span>
+        </span>
+        <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 font-semibold underline underline-offset-2 hover:opacity-90 whitespace-nowrap">
+          <Github className="h-3.5 w-3.5" /> View code on GitHub <ArrowRight className="h-3.5 w-3.5" />
+        </a>
+      </div>
+    </div>
+  );
+}
+
 function Landing() {
   return (
     <div className="min-h-screen">
+      <StatusBanner />
       <div className="pt-4">
         <Nav />
       </div>
@@ -343,6 +360,7 @@ function Landing() {
         <CTA />
       </main>
       <Footer />
+      <LightboxHost />
     </div>
   );
 }
