@@ -133,7 +133,7 @@ function SourcesSection() {
           { img: ytImg, label: "YouTube embed with transcript extraction" },
         ].map((c) => (
           <figure key={c.label} className="group rounded-2xl overflow-hidden border border-border bg-white shadow-sm hover:shadow-xl transition-shadow">
-            <img src={c.img} alt={c.label} className="w-full aspect-[4/3] object-cover object-top" />
+            <ZoomableImage src={c.img} alt={c.label} className="w-full aspect-[4/3] object-cover object-top" />
             <figcaption className="px-4 py-3 text-xs text-muted-foreground">{c.label}</figcaption>
           </figure>
         ))}
