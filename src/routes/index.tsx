@@ -348,6 +348,7 @@ function StatusBanner() {
 function Landing() {
   return (
     <div className="min-h-screen">
+      <DeploymentModal />
       <StatusBanner />
       <div className="pt-4">
         <Nav />
