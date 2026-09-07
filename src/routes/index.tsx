@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Github, FileText, MessageSquare, Presentation, Mic, Network, GraduationCap, Sparkles, Youtube, Globe, Table, Search, Zap, Database, Layers, Info,TextSearch } from "lucide-react";
 import { LightboxHost, ZoomableImage } from "@/components/Lightbox";
+import { DeploymentModal } from "@/components/DeploymentModal";
 
 import chatImg from "@/assets/screenshots/chat_preview.png";
 import deckImg from "@/assets/screenshots/side_deck_preview.png";
@@ -347,6 +348,7 @@ function StatusBanner() {
 function Landing() {
   return (
     <div className="min-h-screen">
+      <DeploymentModal />
       <StatusBanner />
       <div className="pt-4">
         <Nav />
