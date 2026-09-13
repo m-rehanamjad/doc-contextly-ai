@@ -1,17 +1,36 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { X, ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
+import { X, ZoomIn, ZoomOut, RotateCcw, ChevronLeft, ChevronRight } from "lucide-react";
 
-type Props = { src: string; alt: string; onClose: () => void };
+export type LightboxItem = { src: string; alt: string };
 
-export function Lightbox({ src, alt, onClose }: Props) {
+type Props = {
+  items: LightboxItem[];
+  index: number;
+  onIndexChange: (index: number) => void;
+  onClose: () => void;
+};
+
+export function Lightbox({ items, index, onIndexChange, onClose }: Props) {
+  const item = items[index];
   const [scale, setScale] = useState(1);
   const [tx, setTx] = useState(0);
   const [ty, setTy] = useState(0);
   const dragging = useRef<{ x: number; y: number; tx: number; ty: number } | null>(null);
+  const many = items.length > 1;
 
   const reset = useCallback(() => { setScale(1); setTx(0); setTy(0); }, []);
-  const zoomIn = () => setScale((s) => Math.min(s * 1.4, 8));
-  const zoomOut = () => setScale((s) => Math.max(s / 1.4, 1));
+  const zoomIn = useCallback(() => setScale((s) => Math.min(s * 1.4, 8)), []);
+  const zoomOut = useCallback(() => setScale((s) => Math.max(s / 1.4, 1)), []);
+
+  const goPrev = useCallback(() => {
+    onIndexChange((index - 1 + items.length) % items.length);
+    reset();
+  }, [index, items.length, onIndexChange, reset]);
+
+  const goNext = useCallback(() => {
+    onIndexChange((index + 1) % items.length);
+    reset();
+  }, [index, items.length, onIndexChange, reset]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -19,6 +38,8 @@ export function Lightbox({ src, alt, onClose }: Props) {
       else if (e.key === "+" || e.key === "=") zoomIn();
       else if (e.key === "-") zoomOut();
       else if (e.key === "0") reset();
+      else if (e.key === "ArrowLeft" && many) goPrev();
+      else if (e.key === "ArrowRight" && many) goNext();
     };
     window.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
@@ -27,7 +48,7 @@ export function Lightbox({ src, alt, onClose }: Props) {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
     };
-  }, [onClose, reset]);
+  }, [onClose, reset, zoomIn, zoomOut, goPrev, goNext, many]);
 
   const onWheel = (e: React.WheelEvent) => {
     e.preventDefault();
@@ -45,6 +66,11 @@ export function Lightbox({ src, alt, onClose }: Props) {
     setTy(dragging.current.ty + (e.clientY - dragging.current.y));
   };
   const endDrag = () => { dragging.current = null; };
+
+  if (!item) return null;
+
+  const arrowBtn =
+    "absolute top-1/2 -translate-y-1/2 z-10 h-11 w-11 grid place-items-center rounded-full bg-white/10 hover:bg-white/20 text-white transition backdrop-blur-sm";
 
   return (
     <div
@@ -68,6 +94,25 @@ export function Lightbox({ src, alt, onClose }: Props) {
         </button>
       </div>
 
+      {many && (
+        <>
+          <button
+            onClick={(e) => { e.stopPropagation(); goPrev(); }}
+            className={`${arrowBtn} left-4`}
+            aria-label="Previous image"
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); goNext(); }}
+            className={`${arrowBtn} right-4`}
+            aria-label="Next image"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        </>
+      )}
+
       <div
         className="w-full h-full flex items-center justify-center overflow-hidden select-none"
         onMouseDown={onMouseDown}
@@ -78,8 +123,9 @@ export function Lightbox({ src, alt, onClose }: Props) {
         style={{ cursor: scale > 1 ? (dragging.current ? "grabbing" : "grab") : "zoom-in" }}
       >
         <img
-          src={src}
-          alt={alt}
+          key={item.src}
+          src={item.src}
+          alt={item.alt}
           draggable={false}
           onClick={() => scale === 1 && zoomIn()}
           style={{
@@ -92,18 +138,37 @@ export function Lightbox({ src, alt, onClose }: Props) {
         />
       </div>
 
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/60 text-xs">
-        Scroll to zoom · drag to pan · Esc to close
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/60 text-xs text-center">
+        {many ? (
+          <>
+            <span className="tabular-nums text-white/80">{index + 1} / {items.length}</span>
+            <span className="mx-2">·</span>
+            ← → to browse · scroll to zoom · drag to pan · Esc to close
+          </>
+        ) : (
+          "Scroll to zoom · drag to pan · Esc to close"
+        )}
       </div>
     </div>
   );
 }
 
-type ZoomableProps = { src: string; alt: string; className?: string };
+type ZoomableProps = LightboxItem & {
+  className?: string;
+  gallery?: LightboxItem[];
+  index?: number;
+};
 
-export function ZoomableImage({ src, alt, className }: ZoomableProps) {
+export function ZoomableImage({ src, alt, className, gallery, index }: ZoomableProps) {
   const open = () => {
-    window.dispatchEvent(new CustomEvent("lightbox:open", { detail: { src, alt } }));
+    window.dispatchEvent(
+      new CustomEvent("lightbox:open", {
+        detail: {
+          items: gallery ?? [{ src, alt }],
+          index: index ?? 0,
+        },
+      })
+    );
   };
   return (
     <button
@@ -122,15 +187,22 @@ export function ZoomableImage({ src, alt, className }: ZoomableProps) {
 }
 
 export function LightboxHost() {
-  const [item, setItem] = useState<{ src: string; alt: string } | null>(null);
+  const [state, setState] = useState<{ items: LightboxItem[]; index: number } | null>(null);
   useEffect(() => {
     const handler = (e: Event) => {
-      const detail = (e as CustomEvent).detail as { src: string; alt: string };
-      setItem(detail);
+      const detail = (e as CustomEvent).detail as { items: LightboxItem[]; index: number };
+      setState(detail);
     };
     window.addEventListener("lightbox:open", handler);
     return () => window.removeEventListener("lightbox:open", handler);
   }, []);
-  if (!item) return null;
-  return <Lightbox src={item.src} alt={item.alt} onClose={() => setItem(null)} />;
+  if (!state) return null;
+  return (
+    <Lightbox
+      items={state.items}
+      index={state.index}
+      onIndexChange={(index) => setState((s) => (s ? { ...s, index } : s))}
+      onClose={() => setState(null)}
+    />
+  );
 }
