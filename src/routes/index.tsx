@@ -15,6 +15,20 @@ import ytImg from "@/assets/screenshots/yt_source_preview.png";
 
 const GITHUB_URL = "https://github.com/mrehanamjad/DocContextly-AI-notebooklm-clone";
 
+// Order matters — indexes are passed to ZoomableImage below.
+const GALLERY = [
+  { src: chatImg, alt: "DocContextly chat interface showing RAG-grounded answers over uploaded sources" },
+  { src: pdfImg, alt: "PDF preview with full document viewer" },
+  { src: csvImg, alt: "CSV preview with tabular exploration" },
+  { src: ytImg, alt: "YouTube embed with transcript extraction" },
+  { src: deckImg, alt: "Slide deck artifact preview" },
+  { src: voiceImg, alt: "Podcast voiceover artifact preview" },
+  { src: mindImg, alt: "Mind map artifact preview" },
+  { src: quizImg, alt: "Quiz artifact preview" },
+  { src: studyImg, alt: "Study guide artifact preview" },
+];
+const GALLERY_INDEX = new Map(GALLERY.map((g, i) => [g.src, i]));
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
