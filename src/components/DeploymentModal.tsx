@@ -1,25 +1,17 @@
 import { useEffect, useState } from "react";
 import { X, Github, ArrowRight, Rocket } from "lucide-react";
 
-const STORAGE_KEY = "doccontextly-modal-dismissed";
 const GITHUB_URL = "https://github.com/mrehanamjad/DocContextly-AI-notebooklm-clone";
 
 export function DeploymentModal() {
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const dismissed = window.localStorage.getItem(STORAGE_KEY);
-    if (dismissed !== "true") {
-      setIsOpen(true);
-    }
+    setIsOpen(true);
   }, []);
 
   const dismiss = () => {
     setIsOpen(false);
-    if (typeof window !== "undefined") {
-      window.localStorage.setItem(STORAGE_KEY, "true");
-    }
   };
 
   if (!isOpen) return null;
