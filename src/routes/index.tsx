@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Github, FileText, MessageSquare, Presentation, Mic, Network, GraduationCap, Sparkles, Youtube, Globe, Table, Search, Zap, Database, Layers, Info,TextSearch } from "lucide-react";
+import { ArrowRight, Github, FileText, MessageSquare, Presentation, Mic, Network, GraduationCap, Sparkles, Youtube, Globe, Table, Search, Database, Layers, Play, TextSearch } from "lucide-react";
 import { LightboxHost, ZoomableImage } from "@/components/Lightbox";
-import { DeploymentModal } from "@/components/DeploymentModal";
 
 import chatImg from "@/assets/screenshots/chat_preview.png";
 import deckImg from "@/assets/screenshots/side_deck_preview.png";
@@ -62,6 +61,7 @@ function Nav() {
         <div className="hidden md:flex items-center gap-7 text-sm text-muted-foreground">
           <a href="#sources" className="hover:text-foreground transition">Sources</a>
           <a href="#artifacts" className="hover:text-foreground transition">Artifacts</a>
+          <a href="#demo" className="hover:text-foreground transition">Demo</a>
           <a href="#stack" className="hover:text-foreground transition">Stack</a>
           <a href="#status" className="hover:text-foreground transition">Status</a>
         </div>
@@ -96,10 +96,10 @@ function Hero() {
           See it in action
         </a>
       </div>
-      <div className="mt-6 inline-flex items-center gap-2 text-xs text-muted-foreground">
-        <span className="h-2 w-2 rounded-full animate-pulse" style={{ background: "oklch(0.7 0.18 60)" }} />
-        Production deployment currently in progress — explore the code & feature preview below.
-      </div>
+      <a href="#demo" className="mt-6 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition">
+        <Play className="h-4 w-4" />
+        Watch the full demo walkthrough below.
+      </a>
 
       <div className="mt-16 relative">
         <div className="absolute -inset-4 rounded-3xl blur-2xl opacity-60" style={{ background: "linear-gradient(120deg, oklch(0.85 0.15 305 / 0.5), oklch(0.85 0.12 330 / 0.4))" }} />
@@ -203,6 +203,43 @@ function ArtifactsSection() {
   );
 }
 
+function Demo() {
+  return (
+    <section id="demo" className="mx-auto max-w-6xl px-6 py-24">
+      <div className="max-w-2xl">
+        <span className="chip">Demo</span>
+        <h2 className="mt-5 font-display text-5xl md:text-6xl tracking-tight text-ink">
+          See it <span className="italic text-brand-gradient">in motion.</span>
+        </h2>
+        <p className="mt-5 text-lg text-muted-foreground">
+          A full walkthrough: uploading sources, chatting with citations, and generating slide decks, podcasts, mind maps, quizzes and study guides — all grounded in the uploaded material.
+        </p>
+      </div>
+
+      <div className="mt-12 relative">
+        <div className="absolute -inset-4 rounded-3xl blur-2xl opacity-60" style={{ background: "linear-gradient(120deg, oklch(0.85 0.15 305 / 0.5), oklch(0.85 0.12 330 / 0.4))" }} />
+        <div className="relative aspect-video overflow-hidden rounded-2xl border border-border bg-white shadow-[0_40px_100px_-30px_oklch(0.3_0.15_290/0.4)]">
+          <iframe
+            className="h-full w-full"
+            src="https://www.youtube-nocookie.com/embed/uC39hg5Jrds"
+            title="DocContextly — full product demo walkthrough"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div className="mt-6 text-center">
+        <a href="https://youtu.be/uC39hg5Jrds" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition">
+          <Youtube className="h-4 w-4" /> Watch on YouTube
+        </a>
+      </div>
+    </section>
+  );
+}
+
 function Pipeline() {
   const steps = [
     { icon: FileText, t: "Ingest", d: "PDF, DOCX, CSV, MD, web, YouTube" },
@@ -263,43 +300,34 @@ function Pipeline() {
 
 function Status() {
   const rows = [
-    ["Multi-source ingestion (PDF, DOCX, CSV, MD, web, YouTube)", true],
-    ["RAG-based chat with citations", true],
-    ["In-app source preview system", true],
-    ["Summary / FAQ / Quiz / Flashcard / Study Guide generation", true],
-    ["Mind map generation", true],
-    ["Slide deck generation (multi-theme, exportable)", true],
-    ["Podcast-style voiceover generation", true],
-    ["Redis + ARQ background workers", true],
-    ["Vector search with Qdrant", true],
-    ["Production deployment", false],
-    ["Performance optimization", false],
-    ["End-to-end testing", false],
-  ] as const;
+    "Multi-source ingestion (PDF, DOCX, CSV, MD, web, YouTube)",
+    "RAG-based chat with citations",
+    "In-app source preview system",
+    "Summary / FAQ / Quiz / Flashcard / Study Guide generation",
+    "Mind map generation",
+    "Slide deck generation (multi-theme, exportable)",
+    "Podcast-style voiceover generation",
+    "Redis + ARQ background workers",
+    "Vector search with Qdrant",
+  ];
   return (
     <section id="status" className="mx-auto max-w-4xl px-6 py-24">
       <div className="text-center">
         <span className="chip">Project Status</span>
         <h2 className="mt-5 font-display text-5xl md:text-6xl tracking-tight text-ink">
-          Core is <span className="italic text-brand-gradient">done</span>. Shipping soon.
+          Built, working, <span className="italic text-brand-gradient">end-to-end.</span>
         </h2>
         <p className="mt-5 text-muted-foreground max-w-xl mx-auto">
-          Every feature you see above works end-to-end. Focus right now: production infra, perf tuning, and full E2E test coverage.
+          Every feature in this list runs in the real app — watch the demo above or dig into the source code to see each one live.
         </p>
       </div>
       <ul className="mt-12 rounded-2xl border border-border bg-white divide-y divide-border overflow-hidden">
-        {rows.map(([label, done]) => (
+        {rows.map((label) => (
           <li key={label} className="flex items-center justify-between px-5 py-4">
             <span className="text-sm md:text-base text-ink">{label}</span>
-            {done ? (
-              <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full" style={{ background: "oklch(0.94 0.1 155)", color: "oklch(0.4 0.18 155)" }}>
-                <span className="h-1.5 w-1.5 rounded-full" style={{ background: "oklch(0.55 0.2 155)" }} /> Done
-              </span>
-            ) : (
-              <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full" style={{ background: "oklch(0.95 0.08 75)", color: "oklch(0.45 0.15 60)" }}>
-                <Zap className="h-3 w-3" /> In progress
-              </span>
-            )}
+            <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full" style={{ background: "oklch(0.94 0.1 155)", color: "oklch(0.4 0.18 155)" }}>
+              <span className="h-1.5 w-1.5 rounded-full" style={{ background: "oklch(0.55 0.2 155)" }} /> Done
+            </span>
           </li>
         ))}
       </ul>
@@ -312,14 +340,17 @@ function CTA() {
     <section className="mx-auto max-w-5xl px-6 py-24">
       <div className="relative rounded-3xl overflow-hidden border border-border p-12 md:p-16 text-center" style={{ background: "radial-gradient(ellipse at top, oklch(0.95 0.08 305), white)" }}>
         <h2 className="font-display text-5xl md:text-6xl tracking-tight text-ink">
-          The live app is <span className="italic text-brand-gradient">on the way</span>.
+          Think with your <span className="italic text-brand-gradient">knowledge.</span>
         </h2>
         <p className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto">
-          In the meantime, dive into the source code, architecture notes, and full feature walkthrough on GitHub.
+          Dive into the source code, architecture notes, and the full feature walkthrough on GitHub — or watch the demo above.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="btn-primary hover:btn-primary-hover">
             <Github className="h-4 w-4" /> Explore the repository <ArrowRight className="h-4 w-4" />
+          </a>
+          <a href="#demo" className="btn-ghost hover:bg-secondary">
+            <Play className="h-4 w-4" /> Watch the demo
           </a>
         </div>
       </div>
@@ -343,27 +374,10 @@ function Footer() {
   );
 }
 
-function StatusBanner() {
-  return (
-    <div className="w-full text-white text-sm" style={{ background: "linear-gradient(90deg, oklch(0.35 0.2 305), oklch(0.4 0.22 285))" }}>
-      <div className="mx-auto max-w-6xl px-4 py-2.5 flex flex-col sm:flex-row items-center justify-center gap-x-4 gap-y-1 text-center">
-        <span className="inline-flex items-center gap-2">
-          <Info className="h-4 w-4 opacity-90" />
-          <span><strong className="font-semibold">Heads up:</strong> the live app is still being deployed — this page walks through the full product with screenshots, features & architecture.</span>
-        </span>
-        <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 font-semibold underline underline-offset-2 hover:opacity-90 whitespace-nowrap">
-          <Github className="h-3.5 w-3.5" /> View code on GitHub <ArrowRight className="h-3.5 w-3.5" />
-        </a>
-      </div>
-    </div>
-  );
-}
 
 function Landing() {
   return (
     <div className="min-h-screen">
-      <DeploymentModal />
-      <StatusBanner />
       <div className="pt-4">
         <Nav />
       </div>
@@ -371,6 +385,7 @@ function Landing() {
         <Hero />
         <SourcesSection />
         <ArtifactsSection />
+        <Demo />
         <Pipeline />
         <Status />
         <CTA />
