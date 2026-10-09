@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowRight, Github, FileText, MessageSquare, Presentation, Mic, Network, GraduationCap, Sparkles, Youtube, Globe, Table, Search, Database, Layers, Play, TextSearch } from "lucide-react";
 import { LightboxHost, ZoomableImage } from "@/components/Lightbox";
@@ -13,6 +14,8 @@ import csvImg from "@/assets/screenshots/csv_source_preview.png";
 import ytImg from "@/assets/screenshots/yt_source_preview.png";
 
 const GITHUB_URL = "https://github.com/mrehanamjad/DocContextly-AI-notebooklm-clone";
+const YOUTUBE_URL = "https://youtu.be/uC39hg5Jrds";
+const YOUTUBE_EMBED = "https://www.youtube-nocookie.com/embed/uC39hg5Jrds";
 
 // Order matters — indexes are passed to ZoomableImage below.
 const GALLERY = [
@@ -59,9 +62,9 @@ function Nav() {
       <nav className="flex items-center justify-between rounded-full bg-white/80 backdrop-blur-xl border border-[oklch(0.9_0.02_290/0.8)] pl-5 pr-2 py-2 shadow-[0_10px_40px_-15px_oklch(0.3_0.1_290/0.25)]">
         <LogoMark />
         <div className="hidden md:flex items-center gap-7 text-sm text-muted-foreground">
+          <a href="#demo" className="hover:text-foreground transition">Demo</a>
           <a href="#sources" className="hover:text-foreground transition">Sources</a>
           <a href="#artifacts" className="hover:text-foreground transition">Artifacts</a>
-          <a href="#demo" className="hover:text-foreground transition">Demo</a>
           <a href="#stack" className="hover:text-foreground transition">Stack</a>
           <a href="#status" className="hover:text-foreground transition">Status</a>
         </div>
@@ -69,6 +72,56 @@ function Nav() {
           <Github className="h-4 w-4" /> View code
         </a>
       </nav>
+    </div>
+  );
+}
+
+// Poster first, player on click: keeps the hero light and puts the working
+// product directly under the headline.
+function DemoVideo() {
+  const [playing, setPlaying] = useState(false);
+  return (
+    <div id="demo" className="mt-14 scroll-mt-28">
+      <div className="relative">
+        <div className="absolute -inset-4 rounded-3xl blur-2xl opacity-60" style={{ background: "linear-gradient(120deg, oklch(0.85 0.15 305 / 0.5), oklch(0.85 0.12 330 / 0.4))" }} />
+        <div className="relative aspect-video overflow-hidden rounded-2xl border border-border bg-card shadow-[0_40px_100px_-30px_oklch(0.3_0.15_290/0.4)]">
+          {playing ? (
+            <iframe
+              className="h-full w-full"
+              src={`${YOUTUBE_EMBED}?autoplay=1&rel=0`}
+              title="DocContextly — full product demo walkthrough"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            />
+          ) : (
+            <button
+              type="button"
+              onClick={() => setPlaying(true)}
+              aria-label="Play the DocContextly demo walkthrough"
+              className="group relative block h-full w-full cursor-pointer"
+            >
+              <img src={chatImg} alt={GALLERY[0]!.alt} className="h-full w-full object-cover object-top" />
+              <span
+                className="absolute inset-0 opacity-100 transition-opacity duration-300 group-hover:opacity-75"
+                style={{ background: "oklch(0.22 0.05 285 / 0.55)" }}
+              />
+              <span className="absolute left-1/2 top-1/2 grid h-20 w-20 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-card shadow-[0_20px_60px_-10px_oklch(0.2_0.05_285/0.6)] transition-transform duration-300 group-hover:scale-110">
+                <Play className="ml-1 h-7 w-7" style={{ color: "oklch(0.5 0.28 305)" }} strokeWidth={2.2} />
+              </span>
+              <span className="absolute inset-x-0 bottom-7 flex items-center justify-center gap-2 text-sm font-medium text-background">
+                <Youtube className="h-4 w-4" />
+                Watch the full walkthrough
+              </span>
+            </button>
+          )}
+        </div>
+      </div>
+      <div className="mt-5 text-center">
+        <a href={YOUTUBE_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition">
+          <Youtube className="h-4 w-4" /> Watch on YouTube
+        </a>
+      </div>
     </div>
   );
 }
@@ -96,17 +149,8 @@ function Hero() {
           See it in action
         </a>
       </div>
-      <a href="#demo" className="mt-6 inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition">
-        <Play className="h-4 w-4" />
-        Watch the full demo walkthrough below.
-      </a>
 
-      <div className="mt-16 relative">
-        <div className="absolute -inset-4 rounded-3xl blur-2xl opacity-60" style={{ background: "linear-gradient(120deg, oklch(0.85 0.15 305 / 0.5), oklch(0.85 0.12 330 / 0.4))" }} />
-        <div className="relative rounded-2xl overflow-hidden border border-border shadow-[0_40px_100px_-30px_oklch(0.3_0.15_290/0.4)] bg-white">
-          <ZoomableImage src={chatImg} alt={GALLERY[0]!.alt} className="w-full block" gallery={GALLERY} index={0} />
-        </div>
-      </div>
+      <DemoVideo />
     </section>
   );
 }
@@ -203,43 +247,6 @@ function ArtifactsSection() {
   );
 }
 
-function Demo() {
-  return (
-    <section id="demo" className="mx-auto max-w-6xl px-6 py-24">
-      <div className="max-w-2xl">
-        <span className="chip">Demo</span>
-        <h2 className="mt-5 font-display text-5xl md:text-6xl tracking-tight text-ink">
-          See it <span className="italic text-brand-gradient">in motion.</span>
-        </h2>
-        <p className="mt-5 text-lg text-muted-foreground">
-          A full walkthrough: uploading sources, chatting with citations, and generating slide decks, podcasts, mind maps, quizzes and study guides — all grounded in the uploaded material.
-        </p>
-      </div>
-
-      <div className="mt-12 relative">
-        <div className="absolute -inset-4 rounded-3xl blur-2xl opacity-60" style={{ background: "linear-gradient(120deg, oklch(0.85 0.15 305 / 0.5), oklch(0.85 0.12 330 / 0.4))" }} />
-        <div className="relative aspect-video overflow-hidden rounded-2xl border border-border bg-white shadow-[0_40px_100px_-30px_oklch(0.3_0.15_290/0.4)]">
-          <iframe
-            className="h-full w-full"
-            src="https://www.youtube-nocookie.com/embed/uC39hg5Jrds"
-            title="DocContextly — full product demo walkthrough"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            allowFullScreen
-            loading="lazy"
-          />
-        </div>
-      </div>
-
-      <div className="mt-6 text-center">
-        <a href="https://youtu.be/uC39hg5Jrds" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition">
-          <Youtube className="h-4 w-4" /> Watch on YouTube
-        </a>
-      </div>
-    </section>
-  );
-}
-
 function Pipeline() {
   const steps = [
     { icon: FileText, t: "Ingest", d: "PDF, DOCX, CSV, MD, web, YouTube" },
@@ -318,7 +325,7 @@ function Status() {
           Built, working, <span className="italic text-brand-gradient">end-to-end.</span>
         </h2>
         <p className="mt-5 text-muted-foreground max-w-xl mx-auto">
-          Every feature in this list runs in the real app — watch the demo above or dig into the source code to see each one live.
+          Every feature in this list runs in the real app — watch the walkthrough at the top of the page, or dig into the source code to see each one in detail.
         </p>
       </div>
       <ul className="mt-12 rounded-2xl border border-border bg-white divide-y divide-border overflow-hidden">
@@ -343,7 +350,7 @@ function CTA() {
           Think with your <span className="italic text-brand-gradient">knowledge.</span>
         </h2>
         <p className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto">
-          Dive into the source code, architecture notes, and the full feature walkthrough on GitHub — or watch the demo above.
+          Dive into the source code, architecture notes, and the full feature walkthrough on GitHub — or replay the demo at the top of this page.
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="btn-primary hover:btn-primary-hover">
@@ -374,7 +381,6 @@ function Footer() {
   );
 }
 
-
 function Landing() {
   return (
     <div className="min-h-screen">
@@ -385,7 +391,6 @@ function Landing() {
         <Hero />
         <SourcesSection />
         <ArtifactsSection />
-        <Demo />
         <Pipeline />
         <Status />
         <CTA />
