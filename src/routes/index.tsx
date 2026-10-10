@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ArrowRight, Github, FileText, MessageSquare, Presentation, Mic, Network, GraduationCap, Sparkles, Youtube, Globe, Table, Search, Database, Layers, Play, TextSearch } from "lucide-react";
+import { ArrowRight, Github, FileText, MessageSquare, Presentation, Mic, Network, GraduationCap, Sparkles, Youtube, Globe, Table, Search, Database, Layers, Play, TextSearch, Settings } from "lucide-react";
+import { toast } from "sonner";
 import { LightboxHost, ZoomableImage } from "@/components/Lightbox";
 
 import chatImg from "@/assets/screenshots/chat_preview.png";
@@ -79,6 +80,19 @@ function Nav() {
 // product directly under the headline.
 function DemoVideo() {
   const [playing, setPlaying] = useState(false);
+
+  // YouTube picks quality per viewer, so nudge it and tell people how to lock it.
+  const play = () => {
+    setPlaying(true);
+    toast("Tip: set the quality to 1080p", {
+      description:
+        "Click the gear icon in the player and choose 1080p (or 720p if your connection is slow) for the sharpest view.",
+      duration: 9000,
+      icon: <Settings className="h-4 w-4" style={{ color: "oklch(0.5 0.28 305)" }} />,
+    });
+  };
+
+
   return (
     <div id="demo" className="mt-14 scroll-mt-28">
       <div className="relative">
@@ -87,7 +101,7 @@ function DemoVideo() {
           {playing ? (
             <iframe
               className="h-full w-full"
-              src={`${YOUTUBE_EMBED}?autoplay=1&rel=0`}
+              src={`${YOUTUBE_EMBED}?autoplay=1&rel=0&vq=hd1080`}
               title="DocContextly — full product demo walkthrough"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               referrerPolicy="strict-origin-when-cross-origin"
@@ -96,7 +110,7 @@ function DemoVideo() {
           ) : (
             <button
               type="button"
-              onClick={() => setPlaying(true)}
+              onClick={play}
               aria-label="Play the DocContextly demo walkthrough"
               className="group relative block h-full w-full cursor-pointer"
             >
