@@ -372,42 +372,6 @@ function Pipeline() {
   );
 }
 
-function Status() {
-  const rows = [
-    "Multi-source ingestion (PDF, DOCX, CSV, MD, web, YouTube)",
-    "RAG-based chat with citations",
-    "In-app source preview system",
-    "Summary / FAQ / Quiz / Flashcard / Study Guide generation",
-    "Mind map generation",
-    "Slide deck generation (multi-theme, exportable)",
-    "Podcast-style voiceover generation",
-    "Redis + ARQ background workers",
-    "Vector search with Qdrant",
-  ];
-  return (
-    <section id="status" className="mx-auto max-w-4xl px-6 py-24">
-      <div className="text-center">
-        <span className="chip">Project Status</span>
-        <h2 className="mt-5 font-display text-5xl md:text-6xl tracking-tight text-ink">
-          Built, working, <span className="italic text-brand-gradient">end-to-end.</span>
-        </h2>
-        <p className="mt-5 text-muted-foreground max-w-xl mx-auto">
-          Every feature in this list runs in the real app — watch the walkthrough at the top of the page, or dig into the source code to see each one in detail.
-        </p>
-      </div>
-      <ul className="mt-12 rounded-2xl border border-border bg-white divide-y divide-border overflow-hidden">
-        {rows.map((label) => (
-          <li key={label} className="flex items-center justify-between px-5 py-4">
-            <span className="text-sm md:text-base text-ink">{label}</span>
-            <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full" style={{ background: "oklch(0.94 0.1 155)", color: "oklch(0.4 0.18 155)" }}>
-              <span className="h-1.5 w-1.5 rounded-full" style={{ background: "oklch(0.55 0.2 155)" }} /> Done
-            </span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
 
 function CTA() {
   return (
