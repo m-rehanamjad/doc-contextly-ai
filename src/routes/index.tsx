@@ -285,7 +285,7 @@ function ArtifactsSection() {
           One notebook, <span className="italic text-brand-gradient">nine ways</span> to learn.
         </h2>
         <p className="mt-5 text-lg text-muted-foreground">
-          Turn any notebook into study material or a shareable output — regenerable anytime, always grounded in your uploaded sources.
+          Turn any notebook into study material or a shareable output — regenerable anytime, always grounded in your own sources.
         </p>
       </div>
 
