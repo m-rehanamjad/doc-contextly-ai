@@ -66,7 +66,6 @@ function Nav() {
           <a href="#sources" className="hover:text-foreground transition">Sources</a>
           <a href="#artifacts" className="hover:text-foreground transition">Artifacts</a>
           <a href="#stack" className="hover:text-foreground transition">Stack</a>
-          <a href="#status" className="hover:text-foreground transition">Status</a>
         </div>
         <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="btn-primary hover:btn-primary-hover text-sm">
           <Github className="h-4 w-4" /> View code
@@ -174,6 +173,9 @@ function SourcesSection() {
         <p className="mt-5 text-lg text-muted-foreground">
           Drop in PDFs, DOCX, CSVs, Markdown, websites, or YouTube links. Each source renders inline — no downloads, no tab-switching. YouTube even brings its own transcript.
         </p>
+        <p className="mt-3 text-lg text-muted-foreground">
+          Nothing to upload? Type a topic instead and the workspace researches the web for you.
+        </p>
       </div>
 
       <div className="mt-8 flex flex-wrap gap-2">
@@ -197,7 +199,72 @@ function SourcesSection() {
           </figure>
         ))}
       </div>
+
+      <WebResearch />
     </section>
+  );
+}
+
+// The "I have nothing to upload" path: a topic becomes a notebook of sources.
+function WebResearch() {
+  const topics = [
+    "Quantum computing for beginners",
+    "CRISPR basics",
+    "Post-2008 banking regulation",
+    "React Server Components",
+  ];
+  const results = [
+    { icon: FileText, label: "Introduction to Quantum Computing" },
+    { icon: Globe, label: "Quantum Computing Report — explainer" },
+    { icon: Youtube, label: "Qubits & superposition (lecture)" },
+  ];
+  return (
+    <div className="mt-16 rounded-3xl border border-border bg-white overflow-hidden shadow-sm">
+      <div className="grid md:grid-cols-2 gap-0">
+        <div className="p-8 md:p-12">
+          <span className="chip">No files? No problem</span>
+          <h3 className="mt-5 font-display text-4xl md:text-5xl tracking-tight text-ink">
+            Type a topic, <span className="italic text-brand-gradient">get your sources.</span>
+          </h3>
+          <p className="mt-4 text-lg text-muted-foreground">
+            Don&apos;t have a PDF, a dataset, or a link handy? Just describe what you want to learn. DocContextly searches the web, ranks what it finds, and drops the best articles, papers and videos straight into your notebook — ready to chat with and turn into artifacts.
+          </p>
+          <div className="mt-7 flex flex-wrap gap-2">
+            {topics.map((t) => (
+              <span key={t} className="inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-xs text-muted-foreground">
+                <Search className="h-3 w-3" /> {t}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="border-t md:border-t-0 md:border-l border-border bg-secondary/40 p-8 md:p-12 flex flex-col justify-center">
+          <div className="rounded-2xl border border-border bg-white p-4 shadow-sm">
+            <div className="flex items-center gap-3">
+              <Search className="h-4 w-4 shrink-0 text-muted-foreground" />
+              <span className="text-sm text-ink">Quantum computing for beginners</span>
+              <span className="ml-auto inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold" style={{ background: "oklch(0.94 0.1 155)", color: "oklch(0.4 0.18 155)" }}>
+                <Sparkles className="h-3 w-3" /> 12 sources
+              </span>
+            </div>
+          </div>
+          <ul className="mt-4 space-y-2">
+            {results.map((r) => (
+              <li key={r.label} className="flex items-center gap-3 rounded-xl border border-border bg-white px-4 py-3">
+                <span className="grid place-items-center h-7 w-7 rounded-lg bg-brand-soft shrink-0">
+                  <r.icon className="h-3.5 w-3.5" style={{ color: "oklch(0.5 0.28 305)" }} />
+                </span>
+                <span className="text-sm text-ink truncate">{r.label}</span>
+                <span className="ml-auto shrink-0 text-[11px] font-medium" style={{ color: "oklch(0.45 0.18 155)" }}>Added</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-4 text-xs text-muted-foreground">
+            Everything pulled in is cited and previewable, just like an uploaded file.
+          </p>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -218,7 +285,7 @@ function ArtifactsSection() {
           One notebook, <span className="italic text-brand-gradient">nine ways</span> to learn.
         </h2>
         <p className="mt-5 text-lg text-muted-foreground">
-          Turn any notebook into study material or a shareable output — regenerable anytime, always grounded in your uploaded sources.
+          Turn any notebook into study material or a shareable output — regenerable anytime, always grounded in your own sources.
         </p>
       </div>
 
@@ -305,42 +372,6 @@ function Pipeline() {
   );
 }
 
-function Status() {
-  const rows = [
-    "Multi-source ingestion (PDF, DOCX, CSV, MD, web, YouTube)",
-    "RAG-based chat with citations",
-    "In-app source preview system",
-    "Summary / FAQ / Quiz / Flashcard / Study Guide generation",
-    "Mind map generation",
-    "Slide deck generation (multi-theme, exportable)",
-    "Podcast-style voiceover generation",
-    "Redis + ARQ background workers",
-    "Vector search with Qdrant",
-  ];
-  return (
-    <section id="status" className="mx-auto max-w-4xl px-6 py-24">
-      <div className="text-center">
-        <span className="chip">Project Status</span>
-        <h2 className="mt-5 font-display text-5xl md:text-6xl tracking-tight text-ink">
-          Built, working, <span className="italic text-brand-gradient">end-to-end.</span>
-        </h2>
-        <p className="mt-5 text-muted-foreground max-w-xl mx-auto">
-          Every feature in this list runs in the real app — watch the walkthrough at the top of the page, or dig into the source code to see each one in detail.
-        </p>
-      </div>
-      <ul className="mt-12 rounded-2xl border border-border bg-white divide-y divide-border overflow-hidden">
-        {rows.map((label) => (
-          <li key={label} className="flex items-center justify-between px-5 py-4">
-            <span className="text-sm md:text-base text-ink">{label}</span>
-            <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full" style={{ background: "oklch(0.94 0.1 155)", color: "oklch(0.4 0.18 155)" }}>
-              <span className="h-1.5 w-1.5 rounded-full" style={{ background: "oklch(0.55 0.2 155)" }} /> Done
-            </span>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
 
 function CTA() {
   return (
@@ -392,7 +423,6 @@ function Landing() {
         <SourcesSection />
         <ArtifactsSection />
         <Pipeline />
-        <Status />
         <CTA />
       </main>
       <Footer />
